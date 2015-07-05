@@ -103,9 +103,24 @@ class GameRenderer(object):
         pass
 
     def drawSurface(position, surface):
-        textData = pygame.image.tostring(surface, "RGBA", True)     
-        glRasterPos3d(*position)     
-        glDrawPixels(surface.get_width(), surface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)        
+        textData = pygame.image.tostring(surface, "RGBA", True)
+        glRasterPos3d(*position)
+        glDrawPixels(surface.get_width(), surface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
+        
+    def fillScreen(color):
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0)
+        glMatrixMode(GL_MODELVIEW)
+        glPushMatrix()
+        glLoadIdentity()
+        glColor4ub(color[0], color[1], color[2], color[3])
+        glRecti(-1,-1,1,1)
+        glPopMatrix()
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
 
     def prepareDraw(self, screen):
         bounds = screen.get_rect()
