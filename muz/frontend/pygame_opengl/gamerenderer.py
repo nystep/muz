@@ -113,25 +113,25 @@ class GameRenderer(object):
         textData = pygame.image.tostring(surface, "RGBA", True)
         glRasterPos3d(*position)
         glDrawPixels(surface.get_width(), surface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
-        
-    def fillScreen(color):
-        glClearColor(color[0], color[1], color[2], color[3])
-        glClear(GL_COLOR_BUFFER_BIT)
 
-    def fillScreen(color, position):
-        glMatrixMode(GL_PROJECTION)
-        glPushMatrix()
-        glLoadIdentity()
-        glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0)
-        glMatrixMode(GL_MODELVIEW)
-        glPushMatrix()
-        glLoadIdentity()
-        glColor4ub(color[0], color[1], color[2], color[3])
-        glRect(position[0], position[1], position[2], position[3])
-        glPopMatrix()
-        glMatrixMode(GL_PROJECTION)
-        glPopMatrix()
-        glMatrixMode(GL_MODELVIEW)
+    def fillScreen(color, position=None):
+        if position is None:
+            glClearColor(color[0], color[1], color[2], color[3])
+            glClear(GL_COLOR_BUFFER_BIT)
+        else:
+            glMatrixMode(GL_PROJECTION)
+            glPushMatrix()
+            glLoadIdentity()
+            glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0)
+            glMatrixMode(GL_MODELVIEW)
+            glPushMatrix()
+            glLoadIdentity()
+            glColor4ub(color[0], color[1], color[2], color[3])
+            glRect(position[0], position[1], position[2], position[3])
+            glPopMatrix()
+            glMatrixMode(GL_PROJECTION)
+            glPopMatrix()
+            glMatrixMode(GL_MODELVIEW)
 
     def prepareDraw(self, screen):
         bounds = screen.get_rect()
