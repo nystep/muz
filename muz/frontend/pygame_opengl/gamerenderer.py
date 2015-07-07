@@ -9,6 +9,13 @@ import muz.config
 import muz.game.scoreinfo as scoreinfo
 from muz.util import mix, clamp, approach
 
+from OpenGL.GL import *
+from OpenGL.GLU import *
+
+from OpenGL.GL.ARB.shader_objects import *
+from OpenGL.GL.ARB.fragment_shader import *
+from OpenGL.GL.ARB.vertex_shader import *
+
 config = muz.config.get(__name__, {
     "show-timing-hints" : False,
     "show-nearest-note" : False,
@@ -108,6 +115,10 @@ class GameRenderer(object):
         glDrawPixels(surface.get_width(), surface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
         
     def fillScreen(color):
+        glClearColor(color[0], color[1], color[2], color[3])
+        glClear(GL_COLOR_BUFFER_BIT)
+
+    def fillScreen(color, position):
         glMatrixMode(GL_PROJECTION)
         glPushMatrix()
         glLoadIdentity()
@@ -116,7 +127,7 @@ class GameRenderer(object):
         glPushMatrix()
         glLoadIdentity()
         glColor4ub(color[0], color[1], color[2], color[3])
-        glRecti(-1,-1,1,1)
+        glRect(position[0], position[1], position[2], position[3])
         glPopMatrix()
         glMatrixMode(GL_PROJECTION)
         glPopMatrix()
